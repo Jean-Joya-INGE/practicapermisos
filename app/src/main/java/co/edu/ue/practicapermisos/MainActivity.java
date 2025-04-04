@@ -7,12 +7,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
+import android.app.AlertDialog;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.WindowDecorActionBar;
 import androidx.core.app.ActivityCompat;
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
+
+   public static final int REQUEST_CODE = 1;
+
 //1. decalrracion de atributos (primitivos/objetos)
 
     private Button btnCheckPermission;
@@ -57,12 +67,12 @@ public class MainActivity extends AppCompatActivity {
         btnRequestPermission.setOnClickListener(this::voidrequestPermission);
 
     }
-
+    //3. Verificar permisos
     private void voidcheckPermission(View view) {
         // 4. verificacion de estado de cada permiso--> hay permiso -->0 o hay permiso -->1 **//
         int fingerPrint = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.USE_BIOMETRIC);
         int camara = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA);
-        int blut = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.BLUETOOTH);
+        int bluT = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.BLUETOOTH);
         int ews = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int res = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
         int contact = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_CONTACTS);
@@ -75,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         tvInternet.setText("status Permission Internet: " + internet);
         tvContactos.setText("status Permission Contacts: " + contact);
     }
-
+    //2. Enlace de objetos con la IG e inicializacion de objetos
     private void beginObjets() {
         btnCheckPermission = findViewById(R.id.btnCheckPermission);
         btnRequestPermission = findViewById(R.id.btnRequestPermission);
@@ -88,27 +98,9 @@ public class MainActivity extends AppCompatActivity {
         tvInternet = findViewById(R.id.tvInternet);
         tvContactos = findViewById(R.id.tvContactos);
         tvTitulo = findViewById(R.id.tvTitulo);
-        btnCheckPermission.setSaveEnabled(false);
+        btnCheckPermission.setSaveEnabled(true);
     }
 
-
-    //5. Gestion de respuesta de solicuitud de permiso
-    /*@Override
-    public void onRequestPermissionsResult(int)
-    if (grantResults[0] != PackageManager.PERMISSION_GRANTED){    new AlertDialog.Builder(this)            .setTitle("Alerta de Permisos")            .setMessage("No ha otorgado los permiso a la cámara.  Configure el permiso en ajuste")            .setPositiveButton("Ajustes", new DialogInterface.OnClickListener() {                @Override                public void onClick(DialogInterface dialogInterface, int i) {                    dialogInterface.dismiss();                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,                            Uri.fromParts("package",getPackageName(),null));                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);                    startActivity(intent);                    finish();                }            }).setNegativeButton("Salida", new DialogInterface.OnClickListener() {                @Override                public void onClick(DialogInterface dialogInterface, int i) {                    dialogInterface.dismiss();                    finish();                }            }).create().show();}
-private void beginObjets()
-/*4 Verificacion y solicitud de permiso para la camara */
-       /* if(ActivityCompat.checkSelfPermission
-                (this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED){{
-        ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.CAMERA},1);
-    }
-        "status Permission Contacts
-        int ews = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE););
-        int internet = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.USE_INTERNET););
-        int camara = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.USE_CAMERA););
-        int fingerPrint = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.USE_BIOMETRIC););
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-                o hay permiso -->1 */
     private void voidrequestPermission(View view) {
         /*4 Verificacion y solicitud de permiso para la camara */
         if (ActivityCompat.checkSelfPermission
@@ -118,11 +110,39 @@ private void beginObjets()
             }
         }
 
-        //3. Verificar permisos
-
-
-
-        //2. Enlace de objetos con la inicializacion de objetos
-
+    }
+    //5. Gestion de respuesta de solicuitud de permiso
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        tvResponse.setText(""+grantResults[0]);
+        if(requestCode == REQUEST_CODE){
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED){
+                //perdir permiso nuevamente
+                new AlertDialog.Builder(this)
+                        .setTitle("Alerta de Permisos")
+                        .setMessage("No ha otorgado los permiso a la cámara.  Configure el permiso en ajuste")
+                        .setPositiveButton("Ajustes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                        Uri.fromParts("package",getPackageName(),null));
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }).setNegativeButton("Salida", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                finish();
+                            }
+                        }).create().show();
+            }else{
+                
+            }
+        }
+        
     }
 }
