@@ -72,14 +72,14 @@ public class MainActivity extends AppCompatActivity {
         // 4. verificacion de estado de cada permiso--> hay permiso -->0 o hay permiso -->1 **//
         int fingerPrint = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.USE_BIOMETRIC);
         int camara = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA);
-        int bluT = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.BLUETOOTH);
+        int bluet = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.BLUETOOTH);
         int ews = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int res = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
         int contact = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_CONTACTS);
         int internet = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.INTERNET);
         tvFingerPrint.setText("status Permission fingerprint: " + fingerPrint);
         tvCamera.setText("status Permission Camera: " + camara);
-        tvBT.setText("status Permission BT: " + blut);
+        tvBT.setText("status Permission BT: " + bluet);
         tvEws.setText("status Permission External Storage: " + ews);
         tvRS.setText("status Permission Read Storage: " + res);
         tvInternet.setText("status Permission Internet: " + internet);
